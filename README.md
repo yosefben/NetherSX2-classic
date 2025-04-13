@@ -37,11 +37,9 @@ And there you go, you should now have an updated and bug fixed copy of NetherSX2
 
 ## Credits
 * PCSX2: <https://github.com/PCSX2/pcsx2> 
-* AetherSX2: <https://www.aethersx2.com/archive/> 
 * EZOnTheEyes: <https://www.youtube.com/@EZOnTheEyes>
 * Xdelta-GPL: <https://github.com/jmacd/xdelta-gpl>
 * cmdcolor: <https://github.com/alecmev/cmdcolor>
 * md5sums: http://www.pc-tools.net/win32/md5sums
 * Android Keystore: <https://github.com/jorfao/pkStore>
 * Alternate Keystore: <https://github.com/tytydraco/public-keystore>
-* Android build-tools: <https://androidsdkmanager.azurewebsites.net/Buildtools>
