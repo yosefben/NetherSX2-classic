@@ -59,6 +59,7 @@ yaml.representer.add_representer(type(None), my_represent_none)
 
 # Create filters to process the file with
 char_list = ['ß', 'à', 'á', 'â', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'þ', 'ÿ', '¸', 'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'Þ']
+key_list = ['clampModes', 'dynaPatches', 'gameFixes', 'gsHWFixes', 'memcardFilters', 'patches', 'roundModes', 'speedHacks']
 ignore_list = ['beforeDraw', 'bilinearUpscale', 'cpuSpriteRenderLevel', 'eeCycleRate', 'eeDivRoundMode', 'estimateTextureRegion', 'getSkipCount', 'gpuTargetCLUT', 'maximumBlendingLevel', 'minimumBlendingLevel', 'name-sort', 'nativePaletteDraw', 'nativeScaling', 'partialTargetInvalidation', 'recommendedBlendingLevel']
 replace_dic = {'autoFlush: 2': 'autoFlush: 1', 'forceEvenSpritePosition:': 'wildArmsHack:', 'halfPixelOffset: 4': 'halfPixelOffset: 1', 'halfPixelOffset: 5': 'halfPixelOffset: 1', 'instantVU1:': 'InstantVU1SpeedHack:', 'mtvu:': 'MTVUSpeedHack:', 'mvuFlag:': 'mvuFlagSpeedHack:', 'name-en:': 'name:', 'vu1ClampMode:': 'vuClampMode:'}
 
@@ -71,6 +72,9 @@ with open('GameIndex[fixed].yaml', encoding='utf8') as base, open('old/GameIndex
     base_db = yaml.load(base)
     og_db = yaml.load(og)
     diff_db = yaml.load(diff)
+    print('Removing unwanted entries prior to merging...')
+    og_db = {k: v for k, v in og_db.items() if any(required_key in v for required_key in key_list)}
+    diff_db = {k: v for k, v in diff_db.items() if any(required_key in v for required_key in key_list)}
     print('Merging GameDB entries...')
     base_db.update(og_db)
     base_db.update(diff_db)
