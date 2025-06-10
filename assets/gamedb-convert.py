@@ -22,10 +22,10 @@ key_order = ['name', 'name-sort', 'name-en', 'region', 'compat', 'clampModes', '
 clamp_list = ['eeClampMode', 'vuClampMode', 'vu0ClampMode', 'vu1ClampMode']
 round_list = ['eeRoundMode', 'vuRoundMode', 'vu0RoundMode', 'vu1RoundMode']
 gmfix_list = ['BlitInternalFPSHack', 'DMABusyHack', 'EETimingHack', 'FpuMulHack', 'GIFFIFOHack', 'GoemonTlbHack', 'IbitHack', 'InstantDMAHack', 'OPHFlagHack', 'SkipMPEGHack', 'SoftwareRendererFMVHack', 'VIF1StallHack', 'VIFFIFOHack', 'VuAddSubHack', 'VUOverflowHack', 'FullVU0SyncHack', 'VUSyncHack', 'XGKickHack']
-hwfix_list = ['autoFlush', 'cpuFramebufferConversion', 'disableDepthSupport', 'preloadFrameData', 'disablePartialInvalidation', 'partialTargetInvalidation', 'textureInsideRT', 'alignSprite', 'mergeSprite', 'wildArmsHack', 'mipmap', 'trilinearFiltering', 'skipDrawStart', 'skipDrawEnd', 'halfBottomOverride', 'halfPixelOffset', 'roundSprite', 'texturePreloading', 'deinterlace', 'cpuSpriteRenderBW', 'cpuCLUTRender', 'gpuPaletteConversion']
 speed_list = ['mvuFlagSpeedHack', 'InstantVU1SpeedHack', 'MTVUSpeedHack']
+hwfix_list = ['autoFlush', 'cpuFramebufferConversion', 'disableDepthSupport', 'preloadFrameData', 'disablePartialInvalidation', 'textureInsideRT', 'alignSprite', 'mergeSprite', 'wildArmsHack', 'mipmap', 'trilinearFiltering', 'skipDrawStart', 'skipDrawEnd', 'halfBottomOverride', 'halfPixelOffset', 'roundSprite', 'texturePreloading', 'deinterlace', 'cpuSpriteRenderBW', 'cpuCLUTRender', 'gpuPaletteConversion']
 ignore_list = ['beforeDraw', 'bilinearUpscale', 'cpuSpriteRenderLevel', 'eeCycleRate', 'estimateTextureRegion', 'getSkipCount', 'gpuTargetCLUT', 'maximumBlendingLevel', 'minimumBlendingLevel', 'name-sort', 'nativePaletteDraw', 'nativeScaling', 'partialTargetInvalidation', 'PCRTCOffsets', 'PCRTCOverscan', 'readTCOnClose', 'recommendedBlendingLevel']
-replace_dict = {'autoFlush: 2': 'autoFlush: 1', 'forceEvenSpritePosition:': 'wildArmsHack:', 'halfPixelOffset: 4': 'halfPixelOffset: 1', 'halfPixelOffset: 5': 'halfPixelOffset: 1', 'instantVU1:': 'InstantVU1SpeedHack:', 'mtvu:': 'MTVUSpeedHack:', 'mvuFlag:': 'mvuFlagSpeedHack:', 'name-en:': 'name:', 'PlayStation2': 'PlayStation 2', 'textureInsideRT: 2': 'textureInsideRT: 1', '～': ''}
+replace_dict = {'autoFlush: 2': 'autoFlush: 1', 'forceEvenSpritePosition:': 'wildArmsHack:', 'halfPixelOffset: 4': 'halfPixelOffset: 2', 'halfPixelOffset: 5': 'halfPixelOffset: 2', 'instantVU1:': 'InstantVU1SpeedHack:', 'mtvu:': 'MTVUSpeedHack:', 'mvuFlag:': 'mvuFlagSpeedHack:', 'name-en:': 'name:', 'PlayStation2': 'PlayStation 2', 'textureInsideRT: 2': 'textureInsideRT: 1', '～': ''}
 
 def sort_keys(my_dict):
     sorted_data = {}
@@ -128,13 +128,6 @@ def process_dict(my_dict, new_dict):
                 if nested_value in value['gameFixes']:
                     if nested_value in my_dict[key]['gameFixes']: continue
                     else: my_dict[key]['gameFixes'].append(nested_value)
-        if 'gsHWFixes' in value and key in my_dict:
-            for nested_key in hwfix_list:
-                if nested_key in value['gsHWFixes']:
-                    try:
-                        if my_dict[key]['gsHWFixes'][nested_key]: continue
-                    except KeyError:
-                        my_dict[key]['gsHWFixes'][nested_key] = new_dict[key]['gsHWFixes'][nested_key]
         if 'speedHacks' in value and key in my_dict:
             for nested_key in speed_list:
                 if nested_key in value['speedHacks']:
@@ -142,6 +135,13 @@ def process_dict(my_dict, new_dict):
                         if my_dict[key]['speedHacks'][nested_key]: continue
                     except KeyError:
                         my_dict[key]['speedHacks'][nested_key] = new_dict[key]['speedHacks'][nested_key]
+        if 'gsHWFixes' in value and key in my_dict:
+            for nested_key in hwfix_list:
+                if nested_key in value['gsHWFixes']:
+                    try:
+                        if my_dict[key]['gsHWFixes'][nested_key]: continue
+                    except KeyError:
+                        my_dict[key]['gsHWFixes'][nested_key] = new_dict[key]['gsHWFixes'][nested_key]
     if req_sort: my_dict.update(sort_keys(my_dict))
     return my_dict
 
